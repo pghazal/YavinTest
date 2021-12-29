@@ -8,13 +8,13 @@ import android.os.Parcelable
 @Parcelize
 data class Meta(
     @SerializedName("code")
-    val code: Int?,
+    var code: Int? = null,
     @SerializedName("count")
-    val count: Int?,
+    var count: Int? = null,
     @SerializedName("message")
-    val message: String?,
+    var message: String? = null,
     @SerializedName("start")
-    val start: Int?,
+    var start: Int? = null,
     @SerializedName("total")
-    val total: Int?
+    var total: Int? = null
 ) : Parcelable

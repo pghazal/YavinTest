@@ -1,14 +1,14 @@
 package com.pghaz.yavintest.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-import android.os.Parcelable
 
 @Parcelize
 data class YavinResponse(
     @SerializedName("data")
-    val `data`: Data?,
+    var `data`: Data? = null,
     @SerializedName("meta")
-    val meta: Meta?
+    var meta: Meta? = null
 ) : Parcelable

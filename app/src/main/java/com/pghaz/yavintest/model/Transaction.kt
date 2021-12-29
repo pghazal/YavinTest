@@ -1,28 +1,28 @@
 package com.pghaz.yavintest.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-import android.os.Parcelable
 
 @Parcelize
 data class Transaction(
     @SerializedName("amount")
-    val amount: Int?,
+    var amount: Int? = null,
     @SerializedName("currency")
-    val currency: String?,
+    var currency: String? = null,
     @SerializedName("date")
-    val date: String?,
+    var date: String? = null,
     @SerializedName("logical_number")
-    val logicalNumber: String?,
+    var logicalNumber: String? = null,
     @SerializedName("pan")
-    val pan: String?,
+    var pan: String? = null,
     @SerializedName("scheme")
-    val scheme: String?,
+    var scheme: String? = null,
     @SerializedName("status")
-    val status: String?,
+    var status: Status? = null,
     @SerializedName("time")
-    val time: String?,
+    var time: String? = null,
     @SerializedName("transaction_id")
-    val transactionId: String?
+    var transactionId: String? = null
 ) : Parcelable

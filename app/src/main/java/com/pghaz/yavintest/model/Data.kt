@@ -8,5 +8,5 @@ import android.os.Parcelable
 @Parcelize
 data class Data(
     @SerializedName("transactions")
-    val transactions: List<Transaction>?
+    var transactions: List<Transaction>? = null
 ) : Parcelable

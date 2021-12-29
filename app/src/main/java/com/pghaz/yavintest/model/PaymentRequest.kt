@@ -7,29 +7,29 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PaymentRequest(
     @SerializedName("amount")
-    val amount: String?,
+    var amount: String? = null,
     @SerializedName("cartId")
-    val cartId: String?,
+    var cartId: String? = null,
     @SerializedName("client")
-    val client: String?,
+    var client: String? = null,
     @SerializedName("currency")
-    val currency: String?,
+    var currency: String? = null,
     @SerializedName("forcePayment")
-    val forcePayment: Boolean?,
+    var forcePayment: Boolean? = null,
     @SerializedName("medium")
-    val medium: String?,
+    var medium: String? = null,
     @SerializedName("receiptTicket")
-    val receiptTicket: List<String>?,
+    var receiptTicket: List<String>? = null,
     @SerializedName("reference")
-    val reference: String?,
+    var reference: String? = null,
     @SerializedName("showPrepay")
-    val showPrepay: Boolean?,
+    var showPrepay: Boolean? = null,
     @SerializedName("showPostpay")
-    val showPostpay: Boolean?,
+    var showPostpay: Boolean? = null,
     @SerializedName("showOnlyLastPostpay")
-    val showOnlyLastPostpay: Boolean?,
+    var showOnlyLastPostpay: Boolean? = null,
     @SerializedName("transactionType")
-    val transactionType: String?,
+    var transactionType: String? = null,
     @SerializedName("vendorToken")
-    val vendorToken: String?
+    var vendorToken: String? = null
 ) : Parcelable

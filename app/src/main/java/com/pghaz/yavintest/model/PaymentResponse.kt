@@ -8,21 +8,21 @@ import android.os.Parcelable
 @Parcelize
 data class PaymentResponse(
     @SerializedName("amount")
-    val amount: String?,
+    var amount: String? = null,
     @SerializedName("cardToken")
-    val cardToken: String?,
+    var cardToken: String? = null,
     @SerializedName("clientTicket")
-    val clientTicket: String?,
+    var clientTicket: String? = null,
     @SerializedName("giftAmount")
-    val giftAmount: String?,
+    var giftAmount: String? = null,
     @SerializedName("reference")
-    val reference: String?,
+    var reference: String? = null,
     @SerializedName("signatureRequired")
-    val signatureRequired: String?,
+    var signatureRequired: String? = null,
     @SerializedName("status")
-    val status: String?,
+    var status: Status? = null,
     @SerializedName("totalAmount")
-    val totalAmount: String?,
+    var totalAmount: String? = null,
     @SerializedName("transactionId")
-    val transactionId: String?,
+    var transactionId: String? = null,
 ) : Parcelable
