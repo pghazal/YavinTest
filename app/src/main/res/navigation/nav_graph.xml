@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/TicketsFragment"
-        android:name="com.pghaz.yavintest.TicketsFragment"
+        android:name="com.pghaz.yavintest.ui.TicketsFragment"
         android:label="@string/tickets_fragment_label"
         tools:layout="@layout/fragment_tickets"/>
 </navigation>

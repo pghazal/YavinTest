@@ -1,4 +1,4 @@
-package com.pghaz.yavintest
+package com.pghaz.yavintest.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
