@@ -7,7 +7,7 @@ import com.pghaz.yavintest.databinding.ItemTicketBinding
 import com.pghaz.yavintest.model.Ticket
 import com.pghaz.yavintest.utils.CurrencyUtils
 
-class TicketsAdapter : RecyclerView.Adapter<TicketViewHolder>() {
+class TicketsAdapter(private val listener: TicketClickListener) : RecyclerView.Adapter<TicketViewHolder>() {
 
     private val items = ArrayList<Ticket>()
 
@@ -21,6 +21,10 @@ class TicketsAdapter : RecyclerView.Adapter<TicketViewHolder>() {
         val ticket = items[position]
         holder.binding.titleTextView.text = ticket.title
         holder.binding.amountTextView.text = CurrencyUtils.convertCtsToDecimal(ticket.amount)
+
+        holder.binding.cardContainer.setOnClickListener {
+            listener.onTicketClicked(ticket)
+        }
     }
 
     override fun getItemCount(): Int {
