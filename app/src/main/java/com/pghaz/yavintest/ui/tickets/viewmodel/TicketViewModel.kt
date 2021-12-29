@@ -53,8 +53,6 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
             cartMap[ticket.id] = 1
         }
 
-        Timber.d("Quantity of ${ticket.id} = ${cartMap[ticket.id]}")
-
         var count = 0
         cartMap.forEach { (_, quantity) ->
             count += quantity
@@ -72,7 +70,10 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
         val paymentRequest = PaymentRequest()
         paymentRequest.apply {
             amount = calculateAmountInCts().toString()
+            receiptTicket = generateTicketReceipt()
         }
+
+        Timber.d(paymentRequest.toString())
 
         payment.value = paymentRequest
     }
@@ -90,5 +91,20 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         return amount
+    }
+
+    private fun generateTicketReceipt(): List<String> {
+        val receipt = mutableListOf<String>()
+
+        tickets.value?.let { tickets ->
+            for (ticket in tickets) {
+                if (cartMap.containsKey(ticket.id)) {
+                    val quantity = cartMap[ticket.id]
+                    receipt.add("> ${ticket.title} x$quantity")
+                }
+            }
+        }
+
+        return receipt
     }
 }
