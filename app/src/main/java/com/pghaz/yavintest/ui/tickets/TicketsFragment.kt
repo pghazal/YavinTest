@@ -1,6 +1,7 @@
 package com.pghaz.yavintest.ui.tickets
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pghaz.yavintest.databinding.FragmentTicketsBinding
-import com.pghaz.yavintest.model.PaymentRequest
+import com.pghaz.yavintest.model.yavin.PaymentRequest
 import com.pghaz.yavintest.ui.payment.PaymentResultContract
 import com.pghaz.yavintest.ui.tickets.adapter.TicketsAdapter
 import com.pghaz.yavintest.ui.tickets.viewmodel.TicketViewModel
@@ -60,6 +61,7 @@ class TicketsFragment : Fragment() {
 
     private var resultLauncher = registerForActivityResult(PaymentResultContract()) { result ->
         Toast.makeText(requireContext(), result.toString(), Toast.LENGTH_SHORT).show()
+        Log.d("TicketsFragment", result.toString())
     }
 
     private fun startPaymentOnYavinPay(payment: PaymentRequest) {

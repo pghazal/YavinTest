@@ -4,9 +4,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
-import com.pghaz.yavintest.model.PaymentRequest
-import com.pghaz.yavintest.model.PaymentResponse
-import com.pghaz.yavintest.model.Status
+import com.pghaz.yavintest.model.yavin.PaymentRequest
+import com.pghaz.yavintest.model.yavin.PaymentResponse
+import com.pghaz.yavintest.model.yavin.Status
 import com.pghaz.yavintest.utils.Constants
 import org.json.JSONArray
 import org.json.JSONException

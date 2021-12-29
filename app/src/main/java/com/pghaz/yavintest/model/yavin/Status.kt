@@ -1,4 +1,4 @@
-package com.pghaz.yavintest.model
+package com.pghaz.yavintest.model.yavin
 
 import com.google.gson.annotations.SerializedName
 
