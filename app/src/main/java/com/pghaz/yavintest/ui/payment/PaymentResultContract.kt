@@ -1,6 +1,5 @@
 package com.pghaz.yavintest.ui.payment
 
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -39,7 +38,7 @@ class PaymentResultContract : ActivityResultContract<PaymentRequest, PaymentResp
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): PaymentResponse {
-        return if (resultCode == Activity.RESULT_OK && intent != null) {
+        return if (intent != null) {
             PaymentResponse(
                 amount = intent.getStringExtra(Constants.KEY_AMOUNT),
                 cardToken = intent.getStringExtra(Constants.KEY_CARD_TOKEN),
