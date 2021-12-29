@@ -6,18 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pghaz.yavintest.databinding.FragmentTicketsBinding
 import com.pghaz.yavintest.model.PaymentRequest
-import com.pghaz.yavintest.model.Ticket
 import com.pghaz.yavintest.ui.payment.PaymentResultContract
 import com.pghaz.yavintest.ui.tickets.adapter.TicketsAdapter
+import com.pghaz.yavintest.ui.tickets.viewmodel.TicketViewModel
 
 class TicketsFragment : Fragment() {
 
     private var _binding: FragmentTicketsBinding? = null
     private val binding get() = _binding!!
 
+    private val ticketViewModel: TicketViewModel by viewModels()
     private lateinit var adapter: TicketsAdapter
 
     override fun onCreateView(
@@ -32,8 +34,7 @@ class TicketsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
-
-        addFakeData()
+        initObservers()
 
         binding.buttonFirst.setOnClickListener {
             val paymentRequest = PaymentRequest()
@@ -50,24 +51,11 @@ class TicketsFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun addFakeData() {
-        val items = ArrayList<Ticket>()
-        items.add(Ticket(
-            title = "Single Journey",
-            amount = "110"
-        ))
-
-        items.add(Ticket(
-            title = "Day Ticket",
-            amount = "250"
-        ))
-
-        items.add(Ticket(
-            title = "Week Ticket",
-            amount = "1200"
-        ))
-
-        adapter.update(items)
+    private fun initObservers() {
+        ticketViewModel.tickets.observe(viewLifecycleOwner, { tickets ->
+            adapter.update(tickets)
+        })
+        ticketViewModel.fetchTickets()
     }
 
     private var resultLauncher = registerForActivityResult(PaymentResultContract()) { result ->
