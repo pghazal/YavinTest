@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pghaz.yavintest.databinding.FragmentTicketsBinding
-import com.pghaz.yavintest.model.Ticket
+import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.model.yavin.PaymentRequest
 import com.pghaz.yavintest.ui.payment.PaymentResultContract
 import com.pghaz.yavintest.ui.tickets.adapter.TicketClickListener
@@ -68,6 +68,8 @@ class TicketsFragment : Fragment(), TicketClickListener {
                 binding.cartButton.visibility = View.GONE
                 binding.cartButton.setOnClickListener(null)
             }
+
+            adapter.notifyDataSetChanged()
         })
 
         ticketViewModel.payment.observe(viewLifecycleOwner, { paymentRequest ->
@@ -89,7 +91,11 @@ class TicketsFragment : Fragment(), TicketClickListener {
         _binding = null
     }
 
-    override fun onTicketClicked(ticket: Ticket) {
-        ticketViewModel.updateCart(ticket)
+    override fun addTicket(ticket: TicketWithQuantity) {
+        ticketViewModel.addToCart(ticket)
+    }
+
+    override fun removeTicket(ticket: TicketWithQuantity) {
+        ticketViewModel.removeFromCart(ticket)
     }
 }

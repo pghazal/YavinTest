@@ -1,8 +1,9 @@
 package com.pghaz.yavintest.ui.tickets.adapter
 
-import com.pghaz.yavintest.model.Ticket
+import com.pghaz.yavintest.model.TicketWithQuantity
 
 interface TicketClickListener {
 
-    fun onTicketClicked(ticket: Ticket)
+    fun addTicket(ticket: TicketWithQuantity)
+    fun removeTicket(ticket: TicketWithQuantity)
 }

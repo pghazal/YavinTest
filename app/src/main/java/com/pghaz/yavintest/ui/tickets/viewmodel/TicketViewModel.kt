@@ -3,17 +3,17 @@ package com.pghaz.yavintest.ui.tickets.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.pghaz.yavintest.model.Ticket
+import com.pghaz.yavintest.model.yavin.Ticket
+import com.pghaz.yavintest.model.TicketWithQuantity
+import com.pghaz.yavintest.model.toTicketsWithQuantity
 import com.pghaz.yavintest.model.yavin.PaymentRequest
 import timber.log.Timber
 
 class TicketViewModel(application: Application) : AndroidViewModel(application) {
 
-    val tickets = MutableLiveData<List<Ticket>>()
-    val cartCount = MutableLiveData<Int>()
+    val tickets = MutableLiveData<List<TicketWithQuantity>>()
+    val cartCount = MutableLiveData(0)
     val payment = MutableLiveData<PaymentRequest>()
-
-    private val cartMap = HashMap<Int, Int>()
 
     fun fetchTickets() {
         // TODO: get from json file
@@ -42,27 +42,48 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
             )
         )
 
-        tickets.value = items
+        tickets.value = items.toTicketsWithQuantity()
     }
 
-    fun updateCart(ticket: Ticket) {
-        if (cartMap.containsKey(ticket.id)) {
-            val quantity = cartMap[ticket.id]!!
-            cartMap[ticket.id] = quantity + 1
-        } else {
-            cartMap[ticket.id] = 1
+    fun addToCart(ticket: TicketWithQuantity) {
+        tickets.value?.let {
+            for (item in it) {
+                if (item.id == ticket.id) {
+                    item.quantity++
+                    break
+                }
+            }
         }
 
-        var count = 0
-        cartMap.forEach { (_, quantity) ->
-            count += quantity
-        }
+        cartCount.value = cartCount.value?.plus(1)
+    }
 
-        cartCount.value = count
+    fun removeFromCart(ticket: TicketWithQuantity) {
+        tickets.value?.let {
+            for (item in it) {
+                if (item.id == ticket.id && item.quantity > 0) {
+                    item.quantity--
+                    if (item.quantity < 0) {
+                        item.quantity = 0
+                    }
+
+                    if(cartCount.value!! <= 1) {
+                        cartCount.value = 0
+                    } else {
+                        cartCount.value = cartCount.value?.minus(1)
+                    }
+                    break
+                }
+            }
+        }
     }
 
     fun clearCart() {
-        cartMap.clear()
+        tickets.value?.let { tickets ->
+            for (ticket in tickets) {
+                ticket.quantity = 0
+            }
+        }
         cartCount.value = 0
     }
 
@@ -83,10 +104,7 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
 
         tickets.value?.let { tickets ->
             for (ticket in tickets) {
-                if (cartMap.containsKey(ticket.id)) {
-                    val quantity = cartMap[ticket.id]
-                    amount += (quantity!! * ticket.amount.toLong())
-                }
+                amount += (ticket.quantity * ticket.amount.toLong())
             }
         }
 
@@ -98,10 +116,7 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
 
         tickets.value?.let { tickets ->
             for (ticket in tickets) {
-                if (cartMap.containsKey(ticket.id)) {
-                    val quantity = cartMap[ticket.id]
-                    receipt.add("> ${ticket.title} x$quantity")
-                }
+                receipt.add("> ${ticket.title} x${ticket.quantity}")
             }
         }
 

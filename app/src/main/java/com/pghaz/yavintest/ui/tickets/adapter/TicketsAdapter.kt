@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pghaz.yavintest.databinding.ItemTicketBinding
-import com.pghaz.yavintest.model.Ticket
+import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.utils.CurrencyUtils
 
 class TicketsAdapter(private val listener: TicketClickListener) : RecyclerView.Adapter<TicketViewHolder>() {
 
-    private val items = ArrayList<Ticket>()
+    private val items = ArrayList<TicketWithQuantity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketViewHolder {
         val binding = ItemTicketBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,8 +22,14 @@ class TicketsAdapter(private val listener: TicketClickListener) : RecyclerView.A
         holder.binding.titleTextView.text = ticket.title
         holder.binding.amountTextView.text = CurrencyUtils.convertCtsToDecimal(ticket.amount)
 
-        holder.binding.cardContainer.setOnClickListener {
-            listener.onTicketClicked(ticket)
+        holder.binding.quantityTextView.text = ticket.quantity.toString()
+
+        holder.binding.addButton.setOnClickListener {
+            listener.addTicket(ticket)
+        }
+
+        holder.binding.removeButton.setOnClickListener {
+            listener.removeTicket(ticket)
         }
     }
 
@@ -31,7 +37,7 @@ class TicketsAdapter(private val listener: TicketClickListener) : RecyclerView.A
         return items.size
     }
 
-    fun update(newItems: List<Ticket>, notify: Boolean = true) {
+    fun update(newItems: List<TicketWithQuantity>, notify: Boolean = true) {
         items.clear()
         items.addAll(newItems)
 
