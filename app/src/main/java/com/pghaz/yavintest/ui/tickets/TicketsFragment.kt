@@ -54,17 +54,17 @@ class TicketsFragment : Fragment() {
         val items = ArrayList<Ticket>()
         items.add(Ticket(
             title = "Single Journey",
-            amount = "1,10"
+            amount = "110"
         ))
 
         items.add(Ticket(
             title = "Day Ticket",
-            amount = "2,50"
+            amount = "250"
         ))
 
         items.add(Ticket(
             title = "Week Ticket",
-            amount = "12"
+            amount = "1200"
         ))
 
         adapter.update(items)
