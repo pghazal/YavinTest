@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/TicketsFragment">
+
+    <fragment
+        android:id="@+id/TicketsFragment"
+        android:name="com.pghaz.yavintest.TicketsFragment"
+        android:label="@string/tickets_fragment_label"
+        tools:layout="@layout/fragment_tickets"/>
+</navigation>
