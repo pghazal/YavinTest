@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pghaz.yavintest.databinding.FragmentTicketsBinding
 import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.model.yavin.PaymentRequest
+import com.pghaz.yavintest.model.yavin.Status
 import com.pghaz.yavintest.ui.payment.PaymentResultContract
 import com.pghaz.yavintest.ui.tickets.adapter.TicketClickListener
 import com.pghaz.yavintest.ui.tickets.adapter.TicketsAdapter
@@ -102,10 +103,17 @@ class TicketsFragment : Fragment(), TicketClickListener {
         resultLauncher.launch(payment)
     }
 
-    private var resultLauncher = registerForActivityResult(PaymentResultContract()) { result ->
-        Toast.makeText(requireContext(), result.toString(), Toast.LENGTH_SHORT).show()
-        Timber.d(result.toString())
-    }
+    private var resultLauncher =
+        registerForActivityResult(PaymentResultContract()) { paymentResponse ->
+            Toast.makeText(requireContext(), paymentResponse.toString(), Toast.LENGTH_SHORT).show()
+            Timber.d(paymentResponse.toString())
+
+            // Payment succeed, we can clear the cart
+            if (paymentResponse.status == Status.OK) {
+                // TODO: add snackbar to indicate payment succeed
+                ticketViewModel.clearCart()
+            }
+        }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -77,15 +77,13 @@ class TicketViewModel @Inject constructor(
     }
 
     fun initCart() {
-        viewModelScope.launch(Dispatchers.IO) {
-            ticketsLiveData.value?.let { tickets ->
-                var quantity = 0
-                for (ticket in tickets) {
-                    quantity += ticket.quantity
-                }
-
-                cartCount.postValue(quantity)
+        ticketsLiveData.value?.let { tickets ->
+            var quantity = 0
+            for (ticket in tickets) {
+                quantity += ticket.quantity
             }
+
+            cartCount.value = quantity
         }
     }
 
