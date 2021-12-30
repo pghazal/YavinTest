@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">YavinTest</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_edition">Edition</string>
 
     <string name="tickets_fragment_label">Tickets</string>
+    <string name="tickets_edition_fragment_label">Edition</string>
     <string name="clear">Clear</string>
     <string name="text_numeric_zero">0</string>
 </resources>

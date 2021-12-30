@@ -9,5 +9,14 @@
         android:id="@+id/TicketsFragment"
         android:name="com.pghaz.yavintest.ui.tickets.TicketsFragment"
         android:label="@string/tickets_fragment_label"
-        tools:layout="@layout/fragment_tickets"/>
+        tools:layout="@layout/fragment_tickets">
+        <action
+            android:id="@+id/action_TicketsFragment_to_ticketEditorFragment"
+            app:destination="@id/ticketEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ticketEditorFragment"
+        android:name="com.pghaz.yavintest.ui.tickets.TicketsEditorFragment"
+        android:label="@string/tickets_edition_fragment_label"
+        tools:layout="@layout/fragment_tickets_editor" />
 </navigation>
