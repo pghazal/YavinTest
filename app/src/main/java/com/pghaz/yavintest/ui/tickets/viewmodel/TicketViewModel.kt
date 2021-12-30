@@ -65,14 +65,27 @@ class TicketViewModel @Inject constructor(
     }
 
     private fun updateTicket(ticket: TicketWithQuantity) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             ticketRepository.localTicketSource.updateTicket(ticket)
         }
     }
 
     private fun updateTickets(tickets: List<TicketWithQuantity>) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             ticketRepository.localTicketSource.updateTickets(tickets)
+        }
+    }
+
+    fun initCart() {
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketsLiveData.value?.let { tickets ->
+                var quantity = 0
+                for (ticket in tickets) {
+                    quantity += ticket.quantity
+                }
+
+                cartCount.postValue(quantity)
+            }
         }
     }
 

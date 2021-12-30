@@ -16,6 +16,7 @@ import com.pghaz.yavintest.ui.payment.PaymentResultContract
 import com.pghaz.yavintest.ui.tickets.adapter.TicketClickListener
 import com.pghaz.yavintest.ui.tickets.adapter.TicketsAdapter
 import com.pghaz.yavintest.ui.tickets.viewmodel.TicketViewModel
+import com.pghaz.yavintest.utils.observeOnce
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -56,6 +57,7 @@ class TicketsFragment : Fragment(), TicketClickListener {
 
     private fun initObservers() {
         loadTickets()
+        initCart()
 
         ticketViewModel.cartCount.observe(viewLifecycleOwner, { count ->
             if (count > 0) {
@@ -69,8 +71,6 @@ class TicketsFragment : Fragment(), TicketClickListener {
                 binding.cartButton.visibility = View.GONE
                 binding.cartButton.setOnClickListener(null)
             }
-
-            adapter.notifyDataSetChanged()
         })
 
         ticketViewModel.payment.observe(viewLifecycleOwner, { paymentRequest ->
@@ -86,6 +86,14 @@ class TicketsFragment : Fragment(), TicketClickListener {
                 } else {
                     ticketViewModel.fetchTickets()
                 }
+            })
+        }
+    }
+
+    private fun initCart() {
+        lifecycleScope.launch {
+            ticketViewModel.ticketsLiveData.observeOnce(viewLifecycleOwner, {
+                ticketViewModel.initCart()
             })
         }
     }
