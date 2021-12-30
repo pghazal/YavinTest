@@ -8,6 +8,6 @@ import com.pghaz.yavintest.utils.CurrencyUtils
 class TicketEditorViewHolder(private val binding: ItemTicketEditorBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(ticket: TicketWithQuantity) {
         binding.titleEditText.setText(ticket.title)
-        binding.amountEditText.setText(CurrencyUtils.convertCtsToDecimal(ticket.amount, false))
+        binding.amountEditText.setText(ticket.amount)
     }
 }
