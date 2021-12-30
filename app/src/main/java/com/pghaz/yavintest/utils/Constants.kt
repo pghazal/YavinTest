@@ -21,4 +21,5 @@ object Constants {
     // ROOM Database keys
     const val DATABASE_NAME = "tickets_database"
     const val TICKETS_TABLE = "tickets_table"
+    const val RECEIPTS_TABLE = "receipts_table"
 }

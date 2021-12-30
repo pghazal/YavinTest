@@ -27,5 +27,9 @@ object ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideDao(database: TicketsDatabase) = database.ticketsDao()
+    fun provideTicketsDao(database: TicketsDatabase) = database.ticketsDao()
+
+    @Singleton
+    @Provides
+    fun provideReceiptsDao(database: TicketsDatabase) = database.receiptsDao()
 }

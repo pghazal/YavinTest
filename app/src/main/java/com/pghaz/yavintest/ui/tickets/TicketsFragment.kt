@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pghaz.yavintest.databinding.FragmentTicketsBinding
 import com.pghaz.yavintest.model.TicketWithQuantity
+import com.pghaz.yavintest.model.toReceipt
 import com.pghaz.yavintest.model.yavin.PaymentRequest
 import com.pghaz.yavintest.model.yavin.Status
+import com.pghaz.yavintest.ui.history.viewmodel.ReceiptViewModel
 import com.pghaz.yavintest.ui.payment.PaymentResultContract
 import com.pghaz.yavintest.ui.tickets.adapter.TicketClickListener
 import com.pghaz.yavintest.ui.tickets.adapter.TicketsAdapter
@@ -30,6 +31,7 @@ class TicketsFragment : Fragment(), TicketClickListener {
     private val binding get() = _binding!!
 
     private val ticketViewModel by activityViewModels<TicketViewModel>()
+    private val receiptViewModel by activityViewModels<ReceiptViewModel>()
     private lateinit var adapter: TicketsAdapter
 
     override fun onCreateView(
@@ -112,9 +114,11 @@ class TicketsFragment : Fragment(), TicketClickListener {
             Timber.d(paymentResponse.toString())
 
             // Payment succeed, we can clear the cart
-            if (paymentResponse.status == Status.OK) {
+            if (paymentResponse.status == Status.OK && paymentResponse.transactionId != null) {
                 // TODO: add snackbar to indicate payment succeed
                 ticketViewModel.clearCart()
+
+                receiptViewModel.saveReceipt(paymentResponse.toReceipt())
             }
         }
 

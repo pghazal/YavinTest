@@ -13,10 +13,17 @@
         <action
             android:id="@+id/action_TicketsFragment_to_ticketEditorFragment"
             app:destination="@id/ticketEditorFragment" />
+        <action
+            android:id="@+id/action_TicketsFragment_to_receiptsFragment"
+            app:destination="@id/receiptsFragment" />
     </fragment>
     <fragment
         android:id="@+id/ticketEditorFragment"
         android:name="com.pghaz.yavintest.ui.tickets.TicketsEditorFragment"
         android:label="@string/tickets_edition_fragment_label"
         tools:layout="@layout/fragment_tickets_editor" />
+    <fragment
+        android:id="@+id/receiptsFragment"
+        android:name="com.pghaz.yavintest.ui.history.ReceiptsFragment"
+        android:label="@string/receipts_fragment_label" />
 </navigation>

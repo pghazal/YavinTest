@@ -7,4 +7,11 @@
         android:orderInCategory="100"
         android:title="@string/action_edition"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_receipts"
+        android:icon="@drawable/ic_receipt"
+        android:orderInCategory="100"
+        android:title="@string/action_receipts"
+        app:showAsAction="ifRoom" />
 </menu>

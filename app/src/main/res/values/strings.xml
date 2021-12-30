@@ -4,10 +4,12 @@
 
     <string name="tickets_fragment_label">Tickets</string>
     <string name="tickets_edition_fragment_label">Edition</string>
+    <string name="receipts_fragment_label">Receipts</string>
 
     <string name="text_numeric_zero">0</string>
 
     <string name="text_clear">Clear</string>
     <string name="text_cents">cts</string>
     <string name="text_save">Save</string>
+    <string name="action_receipts">Receipts</string>
 </resources>

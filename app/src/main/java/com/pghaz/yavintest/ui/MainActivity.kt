@@ -42,6 +42,12 @@ class MainActivity : AppCompatActivity() {
                 getNavController().navigate(R.id.action_TicketsFragment_to_ticketEditorFragment)
                 true
             }
+
+            R.id.action_receipts -> {
+                getNavController().navigate(R.id.action_TicketsFragment_to_receiptsFragment)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
