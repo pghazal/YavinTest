@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pghaz.yavintest.databinding.ItemTicketBinding
 import com.pghaz.yavintest.model.TicketWithQuantity
-import com.pghaz.yavintest.utils.CurrencyUtils
 
 class TicketsAdapter(private val listener: TicketClickListener) : RecyclerView.Adapter<TicketViewHolder>() {
 
@@ -19,18 +18,7 @@ class TicketsAdapter(private val listener: TicketClickListener) : RecyclerView.A
 
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val ticket = items[position]
-        holder.binding.titleTextView.text = ticket.title
-        holder.binding.amountTextView.text = CurrencyUtils.convertCtsToDecimal(ticket.amount)
-
-        holder.binding.quantityTextView.text = ticket.quantity.toString()
-
-        holder.binding.addButton.setOnClickListener {
-            listener.addTicket(ticket)
-        }
-
-        holder.binding.removeButton.setOnClickListener {
-            listener.removeTicket(ticket)
-        }
+        holder.bind(ticket, listener)
     }
 
     override fun getItemCount(): Int {
