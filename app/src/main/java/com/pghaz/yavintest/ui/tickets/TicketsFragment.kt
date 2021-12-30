@@ -76,7 +76,9 @@ class TicketsFragment : Fragment(), TicketClickListener {
         })
 
         ticketViewModel.payment.observe(viewLifecycleOwner, { paymentRequest ->
-            startPaymentOnYavinPay(paymentRequest)
+            paymentRequest?.let {
+                startPaymentOnYavinPay(it)
+            }
         })
     }
 

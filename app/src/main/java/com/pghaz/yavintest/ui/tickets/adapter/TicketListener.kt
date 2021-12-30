@@ -7,3 +7,8 @@ interface TicketClickListener {
     fun addTicket(ticket: TicketWithQuantity)
     fun removeTicket(ticket: TicketWithQuantity)
 }
+
+interface TicketEditorListener {
+    fun updateTicket(ticket: TicketWithQuantity)
+    fun showEditNotAllowed()
+}

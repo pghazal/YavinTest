@@ -38,7 +38,7 @@ class TicketViewModel @Inject constructor(
         items.add(
             Ticket(
                 id = 1,
-                title = "Single Journey",
+                title = "Single Journey Ticket",
                 amount = "110"
             )
         )
@@ -64,7 +64,7 @@ class TicketViewModel @Inject constructor(
         cacheTickets(fetchedTickets)
     }
 
-    private fun updateTicket(ticket: TicketWithQuantity) {
+    fun updateTicket(ticket: TicketWithQuantity) {
         viewModelScope.launch(Dispatchers.IO) {
             ticketRepository.localTicketSource.updateTicket(ticket)
         }
@@ -148,7 +148,9 @@ class TicketViewModel @Inject constructor(
 
         ticketsLiveData.value?.let { tickets ->
             for (ticket in tickets) {
-                receipt.add("> ${ticket.title} x${ticket.quantity}")
+                if(ticket.quantity > 0 ) {
+                    receipt.add("> ${ticket.title} x${ticket.quantity}")
+                }
             }
         }
 

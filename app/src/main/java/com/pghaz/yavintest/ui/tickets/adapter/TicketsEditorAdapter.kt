@@ -7,7 +7,7 @@ import com.pghaz.yavintest.databinding.ItemTicketEditorBinding
 import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.ui.tickets.adapter.TicketEditorViewHolder
 
-class TicketsEditorAdapter : RecyclerView.Adapter<TicketEditorViewHolder>() {
+class TicketsEditorAdapter(private val listener: TicketEditorListener) : RecyclerView.Adapter<TicketEditorViewHolder>() {
 
     private val items = ArrayList<TicketWithQuantity>()
 
@@ -20,7 +20,7 @@ class TicketsEditorAdapter : RecyclerView.Adapter<TicketEditorViewHolder>() {
 
     override fun onBindViewHolder(holder: TicketEditorViewHolder, position: Int) {
         val ticket = items[position]
-        holder.bind(ticket)
+        holder.bind(ticket, listener)
     }
 
     override fun getItemCount(): Int {

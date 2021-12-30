@@ -4,7 +4,10 @@
 
     <string name="tickets_fragment_label">Tickets</string>
     <string name="tickets_edition_fragment_label">Edition</string>
-    <string name="clear">Clear</string>
+
     <string name="text_numeric_zero">0</string>
-    <string name="cents">cts</string>
+
+    <string name="text_clear">Clear</string>
+    <string name="text_cents">cts</string>
+    <string name="text_save">Save</string>
 </resources>
