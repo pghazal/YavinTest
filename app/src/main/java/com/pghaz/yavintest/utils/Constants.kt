@@ -1,6 +1,8 @@
 package com.pghaz.yavintest.utils
 
 object Constants {
+
+    // Yavin Payment keys
     const val KEY_VENDOR_TOKEN = "vendorToken"
     const val KEY_AMOUNT = "amount"
     const val KEY_CURRENCY = "currency"
@@ -15,4 +17,8 @@ object Constants {
     const val KEY_TOTAL_AMOUNT = "totalAmount"
     const val KEY_TRANSACTION_ID = "transactionId"
     const val KEY_RECEIPT_TICKET = "receiptTicket"
+
+    // ROOM Database keys
+    const val DATABASE_NAME = "tickets_database"
+    const val TICKETS_TABLE = "tickets_table"
 }

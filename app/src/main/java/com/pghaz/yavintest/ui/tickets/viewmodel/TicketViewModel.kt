@@ -3,20 +3,37 @@ package com.pghaz.yavintest.ui.tickets.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.pghaz.yavintest.model.yavin.Ticket
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.model.toTicketsWithQuantity
+import com.pghaz.yavintest.model.yavin.Ticket
 import com.pghaz.yavintest.model.yavin.PaymentRequest
+import com.pghaz.yavintest.repo.TicketRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class TicketViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class TicketViewModel @Inject constructor(
+    application: Application,
+    private val ticketRepository: TicketRepository
+) : AndroidViewModel(application) {
 
-    val tickets = MutableLiveData<List<TicketWithQuantity>>()
     val cartCount = MutableLiveData(0)
     val payment = MutableLiveData<PaymentRequest>()
 
+    val ticketsLiveData = ticketRepository.localTicketSource.getAllTickets.asLiveData()
+
+    private fun cacheTickets(tickets: List<TicketWithQuantity>) =
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketRepository.localTicketSource.insertTickets(tickets)
+        }
+
     fun fetchTickets() {
-        // TODO: get from json file
+        // TODO: get from json file ?
         val items = mutableListOf<Ticket>()
         items.add(
             Ticket(
@@ -42,48 +59,52 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
             )
         )
 
-        tickets.value = items.toTicketsWithQuantity()
+        val fetchedTickets = items.toTicketsWithQuantity()
+
+        cacheTickets(fetchedTickets)
+    }
+
+    private fun updateTicket(ticket: TicketWithQuantity) {
+        viewModelScope.launch {
+            ticketRepository.localTicketSource.updateTicket(ticket)
+        }
+    }
+
+    private fun updateTickets(tickets: List<TicketWithQuantity>) {
+        viewModelScope.launch {
+            ticketRepository.localTicketSource.updateTickets(tickets)
+        }
     }
 
     fun addToCart(ticket: TicketWithQuantity) {
-        tickets.value?.let {
-            for (item in it) {
-                if (item.id == ticket.id) {
-                    item.quantity++
-                    break
-                }
-            }
-        }
+        val newItem = ticket.copy(quantity = ticket.quantity + 1)
+        updateTicket(newItem)
 
         cartCount.value = cartCount.value?.plus(1)
     }
 
     fun removeFromCart(ticket: TicketWithQuantity) {
-        tickets.value?.let {
-            for (item in it) {
-                if (item.id == ticket.id && item.quantity > 0) {
-                    item.quantity--
-                    if (item.quantity < 0) {
-                        item.quantity = 0
-                    }
+        if (ticket.quantity > 0) {
+            val newItem = ticket.copy(quantity = ticket.quantity - 1)
+            updateTicket(newItem)
 
-                    if(cartCount.value!! <= 1) {
-                        cartCount.value = 0
-                    } else {
-                        cartCount.value = cartCount.value?.minus(1)
-                    }
-                    break
-                }
+            if (cartCount.value!! <= 1) {
+                cartCount.value = 0
+            } else {
+                cartCount.value = cartCount.value?.minus(1)
             }
         }
     }
 
     fun clearCart() {
-        tickets.value?.let { tickets ->
+        ticketsLiveData.value?.let { tickets ->
             for (ticket in tickets) {
                 ticket.quantity = 0
             }
+
+            updateTickets(tickets)
         }
+
         cartCount.value = 0
     }
 
@@ -102,7 +123,7 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
     private fun calculateAmountInCts(): Long {
         var amount = 0L
 
-        tickets.value?.let { tickets ->
+        ticketsLiveData.value?.let { tickets ->
             for (ticket in tickets) {
                 amount += (ticket.quantity * ticket.amount.toLong())
             }
@@ -114,7 +135,7 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
     private fun generateTicketReceipt(): List<String> {
         val receipt = mutableListOf<String>()
 
-        tickets.value?.let { tickets ->
+        ticketsLiveData.value?.let { tickets ->
             for (ticket in tickets) {
                 receipt.add("> ${ticket.title} x${ticket.quantity}")
             }
