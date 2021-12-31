@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.pghaz.yavintest.R
 import com.pghaz.yavintest.databinding.FragmentTicketsBinding
 import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.model.toReceipt
@@ -48,10 +50,6 @@ class TicketsFragment : Fragment(), TicketClickListener {
 
         initAdapter()
         initObservers()
-
-        binding.clearButton.setOnClickListener {
-            ticketViewModel.clearCart()
-        }
     }
 
     private fun initAdapter() {
@@ -66,13 +64,11 @@ class TicketsFragment : Fragment(), TicketClickListener {
 
         ticketViewModel.cartCount.observe(viewLifecycleOwner, { count ->
             if (count > 0) {
-                binding.clearButton.visibility = View.VISIBLE
                 binding.cartButton.visibility = View.VISIBLE
                 binding.cartButton.setOnClickListener {
                     ticketViewModel.launchPayment()
                 }
             } else {
-                binding.clearButton.visibility = View.GONE
                 binding.cartButton.visibility = View.GONE
                 binding.cartButton.setOnClickListener(null)
             }
@@ -111,12 +107,14 @@ class TicketsFragment : Fragment(), TicketClickListener {
 
     private var resultLauncher =
         registerForActivityResult(PaymentResultContract()) { paymentResponse ->
-            Toast.makeText(requireContext(), paymentResponse.toString(), Toast.LENGTH_SHORT).show()
-            Timber.d(paymentResponse.toString())
-
             // Payment succeed, we can clear the cart
             if (paymentResponse.status == Status.OK && paymentResponse.transactionId != null) {
-                // TODO: add snackbar to indicate payment succeed
+                Snackbar.make(
+                    requireActivity().findViewById(R.id.content_main),
+                    "Payment succeed",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+
                 ticketViewModel.clearCart()
 
                 receiptViewModel.saveReceipt(paymentResponse.toReceipt())
