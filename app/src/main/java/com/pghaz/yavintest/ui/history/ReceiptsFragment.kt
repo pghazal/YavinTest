@@ -1,9 +1,7 @@
 package com.pghaz.yavintest.ui.history
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +19,16 @@ class ReceiptsFragment : Fragment() {
     private val receiptsViewModel by activityViewModels<ReceiptViewModel>()
 
     private lateinit var adapter: ReceiptsAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
