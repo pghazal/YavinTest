@@ -39,7 +39,6 @@ class TicketsEditorFragment : Fragment(), TicketEditorListener {
         initObservers()
 
         ticketViewModel.clearCart()
-        ticketViewModel.payment.value = null
     }
 
     private fun initAdapter() {

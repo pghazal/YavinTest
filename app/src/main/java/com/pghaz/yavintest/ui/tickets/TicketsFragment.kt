@@ -21,6 +21,7 @@ import com.pghaz.yavintest.ui.tickets.adapter.TicketsAdapter
 import com.pghaz.yavintest.ui.tickets.viewmodel.TicketViewModel
 import com.pghaz.yavintest.utils.observeOnce
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -77,11 +78,11 @@ class TicketsFragment : Fragment(), TicketClickListener {
             }
         })
 
-        ticketViewModel.payment.observe(viewLifecycleOwner, { paymentRequest ->
-            paymentRequest?.let {
-                startPaymentOnYavinPay(it)
+        lifecycleScope.launch {
+            ticketViewModel.payment.collectLatest { paymentRequest ->
+                startPaymentOnYavinPay(paymentRequest)
             }
-        })
+        }
     }
 
     private fun loadTickets() {

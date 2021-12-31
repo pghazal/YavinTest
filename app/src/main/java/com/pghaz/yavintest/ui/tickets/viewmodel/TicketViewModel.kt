@@ -7,11 +7,12 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.pghaz.yavintest.model.TicketWithQuantity
 import com.pghaz.yavintest.model.toTicketsWithQuantity
-import com.pghaz.yavintest.model.yavin.Ticket
 import com.pghaz.yavintest.model.yavin.PaymentRequest
+import com.pghaz.yavintest.model.yavin.Ticket
 import com.pghaz.yavintest.repo.TicketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class TicketViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     val cartCount = MutableLiveData(0)
-    val payment = MutableLiveData<PaymentRequest>()
+    val payment = MutableSharedFlow<PaymentRequest>()
 
     val ticketsLiveData = ticketRepository.localTicketSource.getAllTickets.asLiveData()
 
@@ -128,7 +129,9 @@ class TicketViewModel @Inject constructor(
 
         Timber.d(paymentRequest.toString())
 
-        payment.value = paymentRequest
+        viewModelScope.launch {
+            payment.emit(paymentRequest)
+        }
     }
 
     private fun calculateAmountInCts(): Long {
@@ -148,7 +151,7 @@ class TicketViewModel @Inject constructor(
 
         ticketsLiveData.value?.let { tickets ->
             for (ticket in tickets) {
-                if(ticket.quantity > 0 ) {
+                if (ticket.quantity > 0) {
                     receipt.add("> ${ticket.title} x${ticket.quantity}")
                 }
             }
